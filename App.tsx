@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShoppingItem, Category, PurchaseHistoryEntry, ProductHistory, AppTab } from './types';
 import { AddItemForm } from './componentes/AddItemForm';
 import { ListDisplay } from './componentes/ListDisplay';
@@ -26,7 +26,6 @@ const App: React.FC = () => {
   });
   const [activeTab, setActiveTab] = useState<AppTab>('shopping');
 
-  // Persistence
   useEffect(() => {
     localStorage.setItem('sb_items', JSON.stringify(items));
   }, [items]);
@@ -50,7 +49,7 @@ const App: React.FC = () => {
       name,
       quantity,
       category,
-      price,
+      price: price || 0,
       bought: false
     };
     setItems(prev => [newItem, ...prev]);
@@ -73,7 +72,6 @@ const App: React.FC = () => {
   const handleUpdatePrice = (id: string, price: number) => {
     setItems(prev => prev.map(item => {
       if (item.id === id) {
-        // Also update product history whenever a price is confirmed
         setProductHistory(h => ({
           ...h,
           [item.name]: { lastPrice: price, category: item.category }
@@ -98,32 +96,29 @@ const App: React.FC = () => {
     };
 
     setPurchaseHistory(prev => [newEntry, ...prev]);
-    // Clear bought items, keep unbought
     setItems(prev => prev.filter(i => !i.bought));
-    
-    // Switch to expenses tab to see the result
     setActiveTab('expenses');
   };
 
   return (
-    <div className="min-h-screen pb-40 dark:bg-gray-900 transition-colors duration-200">
-      <header className="sticky top-0 z-30 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md px-4 py-4 mb-4 flex justify-between items-center border-b border-gray-100 dark:border-gray-800">
+    <div className="min-h-screen pb-48 dark:bg-gray-900 transition-colors duration-200">
+      <header className="sticky top-0 z-30 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md px-4 py-4 flex justify-between items-center border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center gap-3">
           <Icons.Logo />
           <div>
-            <h1 className="text-xl font-black tracking-tight dark:text-white">SmartBuy</h1>
-            <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">Lista Inteligente</p>
+            <h1 className="text-xl font-black tracking-tight dark:text-white leading-tight">SmartBuy</h1>
+            <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest leading-none">Lista Inteligente</p>
           </div>
         </div>
         <button 
           onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2.5 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 active:rotate-12 transition-transform"
+          className="p-2.5 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 active:scale-90 transition-transform"
         >
           {isDarkMode ? <Icons.Sun /> : <Icons.Moon />}
         </button>
       </header>
 
-      <main className="px-4 max-w-md mx-auto">
+      <main className="px-4 py-6 max-w-md mx-auto">
         {activeTab === 'shopping' ? (
           <>
             <AddItemForm onAdd={handleAddItem} productHistory={productHistory} />
@@ -141,11 +136,6 @@ const App: React.FC = () => {
       </main>
 
       <Menu activeTab={activeTab} onChangeTab={setActiveTab} />
-      
-      {/* Monetization Placeholder Comments */}
-      {/* TODO: Add logic for 'Free Mode' list limits */}
-      {/* TODO: Add Pro version toggle for unlimited history backup */}
-      {/* TODO: Integrate banner ads for free users at bottom scroll end */}
     </div>
   );
 };
