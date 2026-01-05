@@ -101,10 +101,12 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-48 dark:bg-gray-900 transition-colors duration-200">
-      <header className="sticky top-0 z-30 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md px-4 py-4 flex justify-between items-center border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-3">
-          <Icons.Logo />
+    <div className="min-h-screen pb-48 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+      <header className="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-5 py-4 flex justify-between items-center border-b border-gray-100 dark:border-gray-800 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl">
+            <Icons.Logo />
+          </div>
           <div>
             <h1 className="text-xl font-black tracking-tight dark:text-white leading-tight">SmartBuy</h1>
             <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest leading-none">Lista Inteligente</p>
@@ -112,7 +114,7 @@ const App: React.FC = () => {
         </div>
         <button 
           onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2.5 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 active:scale-90 transition-transform"
+          className="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 active:scale-90 transition-all border border-transparent dark:border-gray-700"
         >
           {isDarkMode ? <Icons.Sun /> : <Icons.Moon />}
         </button>
